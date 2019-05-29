@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import {MatIconModule} from '@angular/material';
-import {MatMenuModule} from '@angular/material';
+import { MyMaterialModule } from "./material.module";
 
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
@@ -19,8 +19,8 @@ import { ConfigComponent } from './config/config.component';
   ],
   imports: [
 	BrowserModule,
-	MatIconModule,
-	MatMenuModule
+	BrowserAnimationsModule,
+	MyMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
