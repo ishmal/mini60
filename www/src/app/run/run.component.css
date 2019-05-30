@@ -1,0 +1,13 @@
+.range-container {
+	height: 300px;
+}
+
+.range-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.range-radio-button {
+  margin: 5px;
+}

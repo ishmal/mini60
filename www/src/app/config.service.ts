@@ -10,7 +10,7 @@ export interface Range {
 
 export interface Config {
 	deviceName: string,
-	currentRange: number,
+	rangeIndex: number,
 	ranges: Range[]
 }
 
@@ -19,7 +19,7 @@ export interface Config {
  */
 const defaultConfig: Config = {
   deviceName: "mini",
-  currentRange: 0,
+  rangeIndex: 0,
   ranges: [{
       name: "160 m",
       start: 1750,
@@ -96,6 +96,7 @@ const dataName = "mini60";
 export class ConfigService {
 
   config: Config;
+  range: Range;
 
   constructor() {
     this.reset();
@@ -116,19 +117,30 @@ export class ConfigService {
   }
 
   reset() {
-    this.config = defaultConfig;
+	const c: Config = defaultConfig;
+	this.config = c;
+	this.range = c.ranges[c.rangeIndex];
+  }
+
+  select(idx) {
+    const c = this.config;
+    c.rangeIndex = idx;
+	this.range = c.ranges[c.rangeIndex];
+	return this.range;
   }
 
   next(): Range {
     const c = this.config;
-    c.currentRange = (c.currentRange + 1) % c.ranges.length;
-	return c.ranges[c.currentRange];
+    c.rangeIndex = (c.rangeIndex + 1) % c.ranges.length;
+	this.range = c.ranges[c.rangeIndex];
+	return this.range;
   }
 
   prev(): Range {
     const c = this.config;
-	c.currentRange = (c.currentRange - 1 + c.ranges.length) % c.ranges.length;
-	return c.ranges[c.currentRange];
+	c.rangeIndex = (c.rangeIndex - 1 + c.ranges.length) % c.ranges.length;
+	this.range = c.ranges[c.rangeIndex];
+	return this.range;
   }
 
 }

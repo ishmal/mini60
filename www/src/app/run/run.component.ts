@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Mini60Service } from '../mini60.service';
 import { Config, Range, ConfigService } from '../config.service';
-import { Hammer } from "hammerjs";
+import Hammer from "hammerjs";
 import Chart from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 
@@ -18,7 +18,7 @@ interface Data {
   templateUrl: './run.component.html',
   styleUrls: ['./run.component.css']
 })
-export class RunComponent implements OnInit {
+export class RunComponent implements AfterViewInit {
 
   minSwr: number;
   minSwrFreq: number;
@@ -29,12 +29,16 @@ export class RunComponent implements OnInit {
   data: Data;
   range: Range;
 
+  sidenavOpened: boolean;
+
+  @ViewChild('chartCanvas', {static: false}) chartCanvas: ElementRef;
+
   constructor(private mini60Service: Mini60Service, private configService: ConfigService) {
   }
 
 
-  ngOnInit() {
-    this.canvas = document.getElementById("chartContainer");
+  ngAfterViewInit () {
+    this.canvas = this.chartCanvas.nativeElement;
     const ctx = this.canvas.getContext("2d");
     this.initData();
     this.chart = new Chart(ctx, this.data);
@@ -44,6 +48,8 @@ export class RunComponent implements OnInit {
 
 
   initData() {
+
+	const range = this.configService.range;
 
     this.data = {
       plugins: [
@@ -77,7 +83,7 @@ export class RunComponent implements OnInit {
         animation: false,
         title: {
           display: true,
-          text: this.range.name,
+          text: range.name,
           fontSize: 14,
           fontStyle: "bold",
           fontColor: "yellow"
@@ -135,8 +141,7 @@ export class RunComponent implements OnInit {
   }
 
   adjustData() {
-	const c = this.configService.config;
-	const range = c.ranges[c.currentRange];
+	const range = this.configService.range;
 	this.range = range;
     let opts = this.data.options;
     let ticks = opts.scales.xAxes[0].ticks;

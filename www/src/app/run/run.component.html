@@ -1,1 +1,24 @@
-<canvas id="chartCanvas" width="500" height="300"></canvas>
+<canvas #chartCanvas width="500" height="300"></canvas>
+
+<mat-sidenav-container class="range-container">
+	<mat-sidenav #sidenav mode="side" [(opened)]="sidenavOpened">
+		<mat-radio-group class="range-radio-group" 
+			aria-label="Select an option">
+			<mat-radio-button class="range-radio-button"
+				*ngFor="let r of configService.config.ranges; let idx = index"
+				[value]="idx"
+				[checked]="idx === configService.config.rangeIndex"
+				(click)="configService.select(idx)">
+				{{r.name}}
+			</mat-radio-button>
+		</mat-radio-group>
+	</mat-sidenav>
+  
+	<mat-sidenav-content>
+	  <p><button mat-button (click)="sidenav.toggle()">{{sidenavOpened ? "◀" : "▶"}}</button></p>
+	</mat-sidenav-content>
+
+</mat-sidenav-container>
+
+
+

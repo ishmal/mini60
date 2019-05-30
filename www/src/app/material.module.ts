@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
-import { MatTabsModule, MatToolbarModule } from '@angular/material';
+import { MatRadioModule, MatTabsModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
 const modules = [
+	MatRadioModule,
+	MatSidenavModule,
 	MatTabsModule,
 	MatToolbarModule
 ];
