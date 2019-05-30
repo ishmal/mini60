@@ -1,3 +1,19 @@
-<p>
-  config works!
-</p>
+<div class="config-form">
+  <button id="config-save" class="btn btn-primary">Save</button>
+  <button id="config-restore" class="btn btn-primary">Restore defaults</button>
+  <label>Bluetooth Device name <input id="config-device" type="text" [value]="config.deviceName" /></label>
+  <table class="table table-sm table-striped" cols="3">
+    <thead>
+      <th>name</th>
+      <th>start khz</th>
+      <th>end khz</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of config.ranges">
+          <td><input [value]="r.name"></td>
+          <td><input [value]="r.start"></td>
+          <td><input [value]="r.end"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

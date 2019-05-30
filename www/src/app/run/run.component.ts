@@ -1,10 +1,17 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Mini60Service } from '../mini60.service';
+import { Config, Range, ConfigService } from '../config.service';
+import { Hammer } from "hammerjs";
 import Chart from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 
+
+interface Data {
+	options: any,
+	plugins: any,
+	type: string,
+	data: any
+}
 
 @Component({
   selector: 'app-run',
@@ -14,20 +21,23 @@ import annotationPlugin from "chartjs-plugin-annotation";
 export class RunComponent implements OnInit {
 
   minSwr: number;
+  minSwrFreq: number;
+  minR: number;
+  minRFreq: number;
   chart: any;
-  data: object;
+  canvas: any;
+  data: Data;
+  range: Range;
 
-  constructor(par) {
-    this.par = par;
-    this.minSwr = 999;
-    this.minSwrFreq = par.range.start;
+  constructor(private mini60Service: Mini60Service, private configService: ConfigService) {
   }
+
 
   ngOnInit() {
     this.canvas = document.getElementById("chartContainer");
-    this.ctx = this.canvas.getContext("2d");
+    const ctx = this.canvas.getContext("2d");
     this.initData();
-    this.chart = new Chart(this.ctx, this.data);
+    this.chart = new Chart(ctx, this.data);
     Chart.pluginService.register(annotationPlugin);
     this.setupEvents();
   }
@@ -67,7 +77,7 @@ export class RunComponent implements OnInit {
         animation: false,
         title: {
           display: true,
-          text: this.par.range.name,
+          text: this.range.name,
           fontSize: 14,
           fontStyle: "bold",
           fontColor: "yellow"
@@ -125,7 +135,9 @@ export class RunComponent implements OnInit {
   }
 
   adjustData() {
-    let range = this.par.range;
+	const c = this.configService.config;
+	const range = c.ranges[c.currentRange];
+	this.range = range;
     let opts = this.data.options;
     let ticks = opts.scales.xAxes[0].ticks;
     ticks.min = range.start;
@@ -134,7 +146,7 @@ export class RunComponent implements OnInit {
   }
 
   startScan() {
-    let range = this.par.range;
+    const range = this.range;
     //this 'ticks' code duplicated below intentionally
     this.adjustData();
     let ds = this.chart.data.datasets;
@@ -149,8 +161,8 @@ export class RunComponent implements OnInit {
   }
 
   endScan() {
-    let txt = this.minSwrFreq.toFixed(0) + "   :   " + this.minSwr.toFixed(1);
-    let annot = {
+    const txt = this.minSwrFreq.toFixed(0) + "   :   " + this.minSwr.toFixed(1);
+    const annot = {
       type: "line",
       mode: "vertical",
       scaleID: "X",
@@ -163,18 +175,18 @@ export class RunComponent implements OnInit {
         content: txt
       }
     };
-    let annots = this.data.options.annotation.annotations;
+    const annots = this.data.options.annotation.annotations;
     annots.push(annot);
     this.redraw();
   }
 
   update(datapoint) {
-    let range = this.par.range;
-    let nrSteps = this.par.nrSteps;
-    let ds = this.chart.data.datasets;
-    let len = ds[0].data.length;
-    let freq = range.start + (range.end - range.start) * len / nrSteps;
-    let swr = datapoint.swr;
+    const range = this.range;
+    const nrSteps = 40;
+    const ds = this.chart.data.datasets;
+    const len = ds[0].data.length;
+    const freq = range.start + (range.end - range.start) * len / nrSteps;
+    const swr = datapoint.swr;
     if (swr < this.minSwr) {
       this.minSwr = swr;
       this.minSwrFreq = freq;
@@ -202,18 +214,17 @@ export class RunComponent implements OnInit {
 
   setupEvents() {
     let that = this;
-    let par = this.par;
     let hammer = new Hammer(this.canvas);
     hammer.on("doubletap", (evt) => {
-      par.checkConnectAndScan();
+      this.mini60Service.checkConnectAndScan();
     });
     hammer.on("swipeleft", (evt) => {
-      par.next();
+      this.configService.next();
       that.adjustData();
       that.redraw();
     });
     hammer.on("swiperight", (evt) => {
-      par.prev();
+      this.configService.prev();
       that.adjustData();
       that.redraw();
     });
