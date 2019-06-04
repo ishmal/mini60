@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
   
-  declare global {
-	  interface Window { bluetoothSerial: any; }
-  }
+declare global {
+	interface Window { bluetoothSerial: any; }
+}
   
-  const bt = window.bluetoothSerial;
+const bt = window.bluetoothSerial;
   
-  @Injectable({
+@Injectable({
 	providedIn: 'root'
-  })
-  export class BtService {
+})
+export class BtService {
   
 	constructor() {}
   

@@ -8,5 +8,16 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+declare global {
+	interface Window { cordova: any; }
+}
+
+if (window.cordova) {
+	const onDeviceReady = () => {
+		platformBrowserDynamic().bootstrapModule(AppModule);
+	};
+	document.addEventListener('deviceready', onDeviceReady, false);
+} else {
+	platformBrowserDynamic().bootstrapModule(AppModule)
+	.catch(err => console.error(err));  
+}
