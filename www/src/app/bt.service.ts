@@ -1,6 +1,4 @@
-import {
-	Injectable
-  } from '@angular/core';
+import { Injectable } from '@angular/core';
   
   declare global {
 	  interface Window { bluetoothSerial: any; }
@@ -23,10 +21,10 @@ import {
 	//# Promisify bt functions
 	//#######################################################
   
-	connected() {
+	isConnected() {
 	  return new Promise((resolve, reject) => {
 		if (!bt) {
-		  reject("btIsConnected: bt not found");
+		  reject("btIsisConnected: bt not found");
 		} else {
 		  bt.isConnected(resolve, reject);
 		}

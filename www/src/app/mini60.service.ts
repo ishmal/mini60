@@ -1,42 +1,48 @@
 import { Injectable } from '@angular/core';
 import { BtService } from './bt.service';
+import { LogService } from './log.service';
+import { ConfigService } from './config.service';
 
-declare global {
-    interface Window { bluetoothSerial: any; }
-}
 
-const bt = window.bluetoothSerial;
+const NR_STEPS = 40;
+const isBrowser = false;
 
 @Injectable({
   providedIn: 'root'
 })
 export class Mini60Service {
 
-  constructor(private btService: BtService) {}
+	connected: boolean;
+	timer: any;
+	graph: any;
 
-  connect(device) {
+  constructor(private btService: BtService,
+	 private log: LogService,
+	 private configService: ConfigService) {
+
+	  this.connected = false;
+  }
+
+  async connect(device) {
 		
-	return this.btService.connect(device.address)
-	.then(() => {
-		return this.btService.subscribe((dat) => this.receive(dat));
-	})
-	.catch((e) => {
-		error("connect failure with '" + device.name + "' : " + e);
-	});
-
+	try {
+		await this.btService.connect(device.address);
+		await this.btService.subscribe((dat) => this.receive(dat));
+	} catch(e) {
+		this.log.error("connect failure with '" + device.name + "' : " + e);
+	}
 }
 
-disconnect() {
+async disconnect() {
 	if (!this.connected) {
 		return;
 	}
-	return this.btService.unsubscribe()
-	.then(() => {
-		return this.btService.disconnect();
-	})
-	.catch((e) => {
-		error("unsubscribe: " + e);
-	});
+	try {
+		await this.btService.unsubscribe();
+		await this.btService.disconnect();
+	} catch(e) {
+		this.log.error("unsubscribe: " + e);
+	}
 }
 
 receive(data) {
@@ -61,53 +67,50 @@ receive(data) {
 }
 
 
-send(msg) {
+async send(msg) {
 	if (!msg) {
 		return;
 	}
-	return this.btService.write(msg + "\r\n")
-	.then(() => {
-		//trace("sent!");
-	})
-	.catch(e => {
-		error("send: " + e);
-	});
+	try {
+		await this.btService.write(msg + "\r\n");
+	} catch(e) {
+		this.log.error("send: " + e);
+	}
 }
 
 findDevice(devices) {
-	let deviceName = this.config.config.deviceName;
-	deviceName = deviceName.toLowerCase();
-	let dev = devices.find(d => {
-		let name = d.name.toLowerCase();
+	const deviceName = this.configService.config.deviceName.toLowerCase();
+	const dev = devices.find(d => {
+		const name = d.name.toLowerCase();
 		return name.startsWith(deviceName);
 	});
 	if (!dev) {
-		error("Paired device '" + deviceName + "' not found");
+		this.log.error("Paired device '" + deviceName + "' not found");
 	}
 	return dev;
 }
 
-findDeviceAndConnect() {
-	return this.btService.list()
-	.then((devices) => {
+async findDeviceAndConnect() {
+	try {
+		const devices = await this.btService.list();
 		let dev = this.findDevice(devices);
-		return this.connect(dev);
-	})
-	.catch((e) => {
-		error("findDeviceAndConnect: cannot list paired devices: " + e);
-	});
+		await this.connect(dev);
+	} catch(e) {
+		this.log.error("findDeviceAndConnect: cannot list paired devices: " + e);
+
+	}
 }
 
 dummyScan() {
 	let that = this;
 	this.receive("Start");
-	let r = this.range;
+	let r = this.configService.range;
 	let start = r.start * 1000;
 	let end = r.end * 1000;
-	let step = ((end - start) / this.nrSteps) | 0;
+	let step = ((end - start) / NR_STEPS) | 0;
 	let freq = start;
 	let xp = 0;
-	let xinc = Math.PI / this.nrSteps;
+	let xinc = Math.PI / NR_STEPS;
 	function runme() {
 		let swr = 5 - Math.sin(xp);
 		xp += xinc;
@@ -127,46 +130,44 @@ dummyScan() {
 }
 
 scan() {
-	let r = this.range;
+	let r = this.configService.range;
 	let start = r.start * 1000;
 	let end = r.end * 1000;
-	let step = ((end - start) / this.nrSteps) | 0;
+	let step = ((end - start) / NR_STEPS) | 0;
 	let cmd = "scan " + start + " " + end + " " + step;
-	trace("cmd: " + cmd);
+	this.log.info("cmd: " + cmd);
 	return this.send(cmd);
 }
 
-checkConnectAndScan() {
+async checkConnectAndScan() {
 	if (isBrowser) {
 		this.dummyScan();
 		return;
 	}
 	if (this.connected) {
-		return this.scan();
+		this.scan();
 	}
-	return this.findDeviceAndConnect()
-	.then(() => {
-		return this.scan();
-	})
-	.catch((e) => {
-		error("checkConnectAndScan: " + e);
-	});
+	try {
+		await this.findDeviceAndConnect();
+		this.scan();
+	} catch(e) {
+		this.log.error("checkConnectAndScan: " + e);
+	}
 }
 
-heartbeat() {
+async heartbeat() {
 	if (isBrowser) {
 		return;
 	}
 	//success = yes, failure = no
-	return this.btService.isConnected()
-	.then(() => {
+	try {
+		await this.btService.isConnected();
 		this.connected = true;
-		this.graph.redraw();
-	})
-	.catch(() => {
-		this.connected = false;   
-		this.graph.redraw();
-	});
+		this.graph.redraw();	
+	} catch (e) {
+		this.connected = false;
+		this.graph.redraw();	
+	}
 }
 
 startHeartbeat() {

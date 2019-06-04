@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script>
+
+		class BtTest {
+			constructor() {
+				const startBtn = document.getElementById("startBtn");
+				startBtn.addEventListener("click", () => this.poll());
+				this.textArea = document.getElementById("textArea");
+			}
+
+			print(msg) {
+				this.textArea.value += "\n" + msg;
+			}
+
+			poll() {
+				navigator.bluetooth.requestDevice({acceptAllDevices: true})
+					.then(dev => print(dev));
+			}
+		}
+
+
+		document.addEventListener("DOMContentLoaded", () => {
+			const bt = new BtTest();
+		});
+
+	</script>
+
+</head>
+
+<body>
+	<h3>HTML5 Bluetooth Test</h3>
+	<button id="startBtn">Start</button>
+	<textarea id="textArea" rows="25" cols="80">
+
+	</textarea>
+
+</body>
+
+</html>

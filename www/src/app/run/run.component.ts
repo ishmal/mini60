@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Mini60Service } from '../mini60.service';
 import { Config, Range, ConfigService } from '../config.service';
+import { LogService } from '../log.service';
 import Hammer from "hammerjs";
 import Chart from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
@@ -33,12 +34,16 @@ export class RunComponent implements AfterViewInit {
 
   @ViewChild('chartCanvas', {static: false}) chartCanvas: ElementRef;
 
-  constructor(private mini60Service: Mini60Service, private configService: ConfigService) {
+  constructor(private mini60Service: Mini60Service, 
+	private configService: ConfigService,
+	private log: LogService) {
   }
 
 
   ngAfterViewInit () {
-    this.canvas = this.chartCanvas.nativeElement;
+	this.canvas = this.chartCanvas.nativeElement;
+	// this.canvas.width = 500;
+	// this.canvas.height = 300;
     const ctx = this.canvas.getContext("2d");
     this.initData();
     this.chart = new Chart(ctx, this.data);
@@ -140,6 +145,11 @@ export class RunComponent implements AfterViewInit {
 
   }
 
+  selectRange(idx: number) {
+	  this.configService.select(idx);
+	  this.sidenavOpened = false;
+  }
+
   adjustData() {
 	const range = this.configService.range;
 	this.range = range;
@@ -151,6 +161,7 @@ export class RunComponent implements AfterViewInit {
   }
 
   startScan() {
+	this.log.info("startScan");
     const range = this.range;
     //this 'ticks' code duplicated below intentionally
     this.adjustData();
@@ -218,20 +229,22 @@ export class RunComponent implements AfterViewInit {
   }
 
   setupEvents() {
-    let that = this;
-    let hammer = new Hammer(this.canvas);
-    hammer.on("doubletap", (evt) => {
-      this.mini60Service.checkConnectAndScan();
+    const hammer = new Hammer(this.canvas);
+    hammer.on("doubletap", () => {
+		this.log.info("tap-tap");
+		this.mini60Service.checkConnectAndScan();
     });
-    hammer.on("swipeleft", (evt) => {
-      this.configService.next();
-      that.adjustData();
-      that.redraw();
+    hammer.on("swipeleft", () => {
+		this.log.info("left");
+		this.configService.next();
+		this.adjustData();
+		this.redraw();
     });
-    hammer.on("swiperight", (evt) => {
-      this.configService.prev();
-      that.adjustData();
-      that.redraw();
+    hammer.on("swiperight", () => {
+		this.log.info("right");
+		this.configService.prev();
+		this.adjustData();
+		this.redraw();
     });
   }
 

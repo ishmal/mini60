@@ -11,3 +11,7 @@
 .range-radio-button {
   margin: 5px;
 }
+
+.canvas-wrapper {
+	display: block;
+}
