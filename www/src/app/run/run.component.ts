@@ -14,10 +14,17 @@ interface Data {
 	data: any
 }
 
+declare global {
+	interface Window {
+	width: number,
+	height: number
+	}
+};
+
 @Component({
   selector: 'app-run',
   templateUrl: './run.component.html',
-  styleUrls: ['./run.component.css']
+  styleUrls: ['./run.component.scss']
 })
 export class RunComponent implements AfterViewInit {
 
@@ -42,8 +49,8 @@ export class RunComponent implements AfterViewInit {
 
   ngAfterViewInit () {
 	this.canvas = this.chartCanvas.nativeElement;
-	// this.canvas.width = 500;
-	// this.canvas.height = 300;
+	this.canvas.width = window.width; 
+	this.canvas.height = window.height;
     const ctx = this.canvas.getContext("2d");
     this.initData();
     this.chart = new Chart(ctx, this.data);
@@ -145,9 +152,17 @@ export class RunComponent implements AfterViewInit {
 
   }
 
+  getRanges(): Range[] {
+	  return this.configService.config.ranges;
+  }
+
   selectRange(idx: number) {
 	  this.configService.select(idx);
 	  this.sidenavOpened = false;
+  }
+
+  isSelected(idx: number): boolean {
+	return idx === this.configService.config.rangeIndex;
   }
 
   adjustData() {

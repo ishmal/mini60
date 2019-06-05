@@ -11,13 +11,24 @@
 				this.textArea = document.getElementById("textArea");
 			}
 
-			print(msg) {
+			async print(msg) {
+				if (typeof msg === "object") {
+					const g = msg.gatt;
+					await g.connect();
+					const info = {
+						id: msg.id,
+						services: await g.getPrimaryServices()
+					};
+					msg = JSON.stringify(info, null, 2);
+				}
 				this.textArea.value += "\n" + msg;
 			}
 
 			poll() {
+				console.log("here");
 				navigator.bluetooth.requestDevice({acceptAllDevices: true})
-					.then(dev => print(dev));
+					.then(dev => this.print(dev))
+					.catch(e => this.print("*** declined *** " + e));
 			}
 		}
 

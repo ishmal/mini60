@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
 	"e2e": "ng e2e",
-	"cordova": "ng build --prod --base-href . --output-path ../app/www/"
+	"cordova": "ng build --prod --source-map --base-href . --output-path ../app/www/"
   },
   "private": true,
   "dependencies": {

@@ -12,6 +12,7 @@ declare global {
 	interface Window { cordova: any; }
 }
 
+/*
 if (window.cordova) {
 	const onDeviceReady = () => {
 		platformBrowserDynamic().bootstrapModule(AppModule);
@@ -21,3 +22,9 @@ if (window.cordova) {
 	platformBrowserDynamic().bootstrapModule(AppModule)
 	.catch(err => console.error(err));  
 }
+*/
+const onDeviceReady = () => {
+	platformBrowserDynamic().bootstrapModule(AppModule);
+};
+document.addEventListener('deviceready', onDeviceReady, false);
+document.addEventListener('DOMContentLoaded', onDeviceReady, false);
