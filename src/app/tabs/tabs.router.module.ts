@@ -17,6 +17,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'select',
+        children: [
+          {
+            path: '',
+            loadChildren: '../select/select.module#SelectModule'
+          }
+        ]
+      },
+      {
         path: 'config',
         children: [
           {
