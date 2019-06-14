@@ -24,7 +24,7 @@ export class BtService {
 	isConnected() {
 	  return new Promise((resolve, reject) => {
 		if (!bt) {
-		  reject("btIsisConnected: bt not found");
+		  reject("btIsisConnected: bluetooth not found");
 		} else {
 		  bt.isConnected(resolve, reject);
 		}
@@ -34,7 +34,7 @@ export class BtService {
 	list() {
 	  return new Promise((resolve, reject) => {
 		if (!bt) {
-		  reject("btList: bt not found");
+		  reject("btList: bluetooth not found");
 		} else {
 		  bt.list(resolve, reject);
 		}
@@ -44,7 +44,7 @@ export class BtService {
 	connect(address) {
 	  return new Promise((resolve, reject) => {
 		if (!bt) {
-		  reject("btConnect: bt not found");
+		  reject("btConnect: bluetooth not found");
 		} else {
 		  bt.connect(address, resolve, reject);
 		}
@@ -54,7 +54,7 @@ export class BtService {
 	disconnect() {
 	  return new Promise((resolve, reject) => {
 		if (!bt) {
-		  reject("btDisconnect: bt not found");
+		  reject("btDisconnect: bluetooth not found");
 		} else {
 		  bt.disconnect(resolve, reject);
 		}
@@ -65,7 +65,7 @@ export class BtService {
 	subscribe(receiveCb) {
 	  return new Promise((resolve, reject) => {
 		if (!bt) {
-		  reject("btSubscribe: bt not found");
+		  reject("btSubscribe: bluetooth not found");
 		} else {
 		  let failMsg = null;
 		  bt.subscribe("\n", receiveCb, (err) => {
@@ -85,7 +85,7 @@ export class BtService {
 	unsubscribe() {
 	  return new Promise((resolve, reject) => {
 		if (!bt) {
-		  reject("btUnsubscribe: bt not found");
+		  reject("btUnsubscribe: bluetooth not found");
 		} else {
 		  bt.unsubscribe(resolve, reject);
 		}
@@ -95,7 +95,7 @@ export class BtService {
 	write(msg) {
 	  return new Promise((resolve, reject) => {
 		if (!bt) {
-		  reject("btWrite: bt not found");
+		  reject("btWrite: bluetooth not found");
 		} else {
 		  bt.write(msg + "\r\n", resolve, reject);
 		}

@@ -1,0 +1,25 @@
+.config-page {
+	background-color: white;
+	overflow-y: scroll;
+}
+
+.bt-label {
+	background-color: #ddffdd;
+	font-weight: bold;
+}
+
+.config-table {
+
+	thead {
+		background-color: #ddffdd;
+	}
+	th {
+		text-align: left;
+	}
+	tr:nth-child(even) {
+		background-color: #f2f2f2;
+	}
+	td { 
+		border: solid #cccccc;
+	}
+}

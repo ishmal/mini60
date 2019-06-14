@@ -1,5 +1,7 @@
 {
   "name": "mini60",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

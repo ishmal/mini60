@@ -1,19 +1,35 @@
-<div class="web">
-  <ion-button mat-button id="config-save" class="btn btn-primary">Save</ion-button>
-  <ion-button mat-button id="config-restore" class="btn btn-primary">Restore defaults</ion-button>
-  <ion-label>Bluetooth Device name <input id="config-device" type="text" [value]="config.deviceName" /></ion-label>
-  <table class="table table-sm table-striped" cols="3">
-    <thead>
-      <th>name</th>
-      <th>start khz</th>
-      <th>end khz</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let r of config.ranges">
-          <td><input [value]="r.name"></td>
-          <td><input [value]="r.start"></td>
-          <td><input [value]="r.end"></td>
-      </tr>
-    </tbody>
-  </table>
+<div class="config-page">
+	<ion-card>
+		<ion-button id="config-save" class="btn btn-primary">Save</ion-button>
+		<ion-button id="config-restore" class="btn btn-primary">Restore defaults</ion-button>
+	</ion-card>
+	<ion-card>
+		<ion-label class="bt-label">Bluetooth Device Name <ion-input id="config-device" type="text"
+				[value]="config.deviceName"></ion-input>
+		</ion-label>
+	</ion-card>
+	<ion-card>
+		<ion-card-content>
+				<table class="config-table" cols="3">
+					<thead>
+						<th>name</th>
+						<th>start khz</th>
+						<th>end khz</th>
+					</thead>
+					<tbody>
+						<tr *ngFor="let r of config.ranges">
+							<td>
+								<ion-input type="text" [value]="r.name"></ion-input>
+							</td>
+							<td>
+								<ion-input type="number" [value]="r.start"></ion-input>
+							</td>
+							<td>
+								<ion-input type="number" [value]="r.end"></ion-input>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+		</ion-card-content>
+	</ion-card>
 </div>

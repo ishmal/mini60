@@ -8,11 +8,11 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'main',
+        path: 'run',
         children: [
           {
             path: '',
-            loadChildren: '../main/main.module#MainModule'
+            loadChildren: '../run/run.module#RunModule'
           }
         ]
       },
@@ -54,14 +54,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/main',
+        redirectTo: '/tabs/run',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/main',
+    redirectTo: '/tabs/run',
     pathMatch: 'full'
   }
 ];
