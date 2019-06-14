@@ -152,19 +152,7 @@ export class MainComponent implements AfterViewInit {
 
   }
 
-  getRanges(): Range[] {
-	  return this.configService.config.ranges;
-  }
-
-  selectRange(idx: number) {
-	  this.configService.select(idx);
-	  this.sidenavOpened = false;
-  }
-
-  isSelected(idx: number): boolean {
-	return idx === this.configService.config.rangeIndex;
-  }
-
+  
   adjustData() {
 	const range = this.configService.range;
 	this.range = range;
