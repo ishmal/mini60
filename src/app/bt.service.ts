@@ -13,10 +13,6 @@ export class BtService {
   
 	constructor() {}
   
-	checkConnectAndScan() {
-  
-	}
-  
 	//#######################################################
 	//# Promisify bt functions
 	//#######################################################

@@ -1,23 +1,29 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogService {
 
-  constructor(private alertController: AlertController) {}
+  constructor(private toastController: ToastController) {}
 
-  async presentAlert(msg) {
-    const alert = await this.alertController.create({
-      header: 'Alert',
-      //subHeader: 'Subtitle',
+  async errorAlert(msg) {
+    const alert = await this.toastController.create({
+	  animated: true,
+      header: 'Error',
       message: msg,
-      buttons: ['OK']
+      duration: 3000
     });
-
 	await alert.present();
-	setTimeout(() => alert.dismiss(), 3000);
+  }
+
+  async infoAlert(msg) {
+    const alert = await this.toastController.create({
+      message: msg,
+      duration: 3000
+    });
+	await alert.present();
   }
 
   log(msg) {
@@ -26,11 +32,12 @@ export class LogService {
   
   error(msg) {
 	console.error(msg);
-	this.presentAlert(msg);
+	this.errorAlert(msg);
   }
 
   info(msg) {
-    console.info(msg);
+	console.info(msg);
+	this.infoAlert(msg);
   }
 
   warn(msg) {

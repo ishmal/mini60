@@ -21,7 +21,6 @@ declare global {
 	}
 };
 
-
 const TITLE_STYLE = {
 	color: "black",
 	style: "bold",
@@ -51,13 +50,13 @@ export class RunComponent implements AfterViewInit {
 	data: Data;
 	range: Range;
 
-	sidenavOpened: boolean;
 
 	@ViewChild('chartCanvas') chartCanvas: ElementRef;
 
 	constructor(private mini60Service: Mini60Service,
 		private configService: ConfigService,
-		private log: LogService) {}
+		private log: LogService) {
+		}
 
 
 	ngAfterViewInit() {
@@ -193,9 +192,9 @@ export class RunComponent implements AfterViewInit {
 
 	startScan() {
 		this.log.info("startScan");
-		const range = this.range;
 		//this 'ticks' code duplicated below intentionally
 		this.adjustData();
+		const range = this.range;
 		let ds = this.chart.data.datasets;
 		ds[0].data = [];
 		ds[1].data = [];
@@ -229,7 +228,7 @@ export class RunComponent implements AfterViewInit {
 
 	update(datapoint) {
 		const range = this.range;
-		const nrSteps = 40;
+		const nrSteps = this.mini60Service.nrSteps;
 		const ds = this.chart.data.datasets;
 		const len = ds[0].data.length;
 		const freq = range.start + (range.end - range.start) * len / nrSteps;
@@ -263,7 +262,7 @@ export class RunComponent implements AfterViewInit {
 		const hammer = new Hammer(this.canvas);
 		hammer.on("doubletap", () => {
 			this.log.info("tap-tap");
-			this.mini60Service.checkConnectAndScan();
+			this.mini60Service.checkConnectAndScan(this);
 		});
 		hammer.on("swipeleft", () => {
 			this.log.info("left");
