@@ -21,13 +21,13 @@ on several different sites crashed on every attempt to connect.
 I thought "how hard can it be?" and downloaded the SARK100 manual from here: http://www.casogo.com/Manual/SARK100.pdf.
 Page 77 lists the PC commands and the results.  It seems quite straightforward and simple.  And it is!
 
-It has only been a few weeks but I already have my own Android client working, based on Apache Cordova.  It's a trivial
+After a few weeks I had my own Android client working, based on Ionic.  It's a trivial
 little app, but it does everything I need.  Maybe it can be useful for you, too.  I have seen a lot of postings
 by people frustrated with their Bluetooth connection not working.  Maybe this can help!.
 
 ### Downloads
 
-Installable .apk files for Android can be found here:  https://github.com/ishmal/open60/releases .  The easiest way to install is to browse to the releases page with your Android device's browser, and click the link.  Your browser will ask you how to continue.
+Installable .apk files for Android and .appxupload for Windows 10 can be found here:  https://github.com/ishmal/mini60/releases .  The easiest way to install is to browse to the releases page with your Android device's browser, and click the link.  Your browser will ask you how to continue.
 
 ### Observations about the Mini60
 
