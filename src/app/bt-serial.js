@@ -103,6 +103,10 @@ class BtSerialWin {
 	}
 
 	async connect(nameOrAddress, success, failure) {
+		if (this.socket) { //TODO:  test socket
+			success(true);
+			return;
+		}
 		// namespace shortcuts
 		const BNS = Windows.Devices.Bluetooth;
 		const RNS = BNS.Rfcomm;

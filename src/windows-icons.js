@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const promisify = require("util").promisify;
 const im = require('imagemagick');
+const sharp = require('sharp');
 
 const p_stat = promisify(fs.stat);
 const p_mkdir = promisify(fs.mkdir);
@@ -118,19 +119,11 @@ class WindowsIcons {
 		for (let icon of iconOutputs) {
 			const srcPath = this.iconFile;
 			const dstPath = path.join(this.resourceWinDir, icon.name);
-			const opts = {
-				srcPath,
-				dstPath,
-				quality: 1,
-				format: 'png',
-				width: icon.width,
-				height: icon.height
-			};
 			try {
-				await p_resize(opts);
+				await sharp(srcPath).resize(icon.width, icon.height).toFile(dstPath);
 				trace(`created '${dstPath}'`)
 			} catch (e) {
-				err(`creation of '${dstPath}' failed`);
+				err(`creation of '${dstPath}' failed: ${e}`);
 				return false;
 			}
 		}
@@ -141,19 +134,11 @@ class WindowsIcons {
 		for (let icon of splashOutputs) {
 			const srcPath = this.splashFile;
 			const dstPath = path.join(this.resourceWinDir, icon.name);
-			const opts = {
-				srcPath,
-				dstPath,
-				quality: 1,
-				format: 'png',
-				width: icon.width,
-				height: icon.height
-			};
 			try {
-				await p_resize(opts);
+				await sharp(srcPath).resize(icon.width, icon.height).toFile(dstPath);
 				trace(`created '${dstPath}'`)
 			} catch (e) {
-				err(`creation of '${dstPath}' failed`);
+				err(`creation of '${dstPath}' failed: ${e}`);
 				return false;
 			}
 		}
