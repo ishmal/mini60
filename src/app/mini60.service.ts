@@ -30,10 +30,10 @@ export class Mini60Service {
 			
 		try {
 			this.log.infoAlert(`connecting to '${device.name}' `);
-			await this.btService.connect(device.address);
+			await this.btService.connect(device.address || device.name);
 			await this.btService.subscribe((dat) => this.receive(dat, parent));
 		} catch(e) {
-			this.log.error("connect failure with '" + device.name + "' : " + e);
+			this.log.error(`connect failure with '${device.name}' : ${e} `);
 		}
 	}
 
