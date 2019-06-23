@@ -6,7 +6,7 @@ NOTE: this is a work in progress to update the Open60 app.  Use https://github.c
 BUT if you would like to try the new stuff, check out the releases page: https://github.com/ishmal/mini60/releases
 
 
-![Alt text](misc/mini60.jpg?raw=true "MINI60")
+![Alt text](misc/mini60-2.jpg?raw=true "MINI60")
 ![Alt text](misc/demo-40m-tooltip.png?raw=true "example")
 ![Alt text](misc/demo-20m-win.png?raw=true "example")
 
