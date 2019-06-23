@@ -1,14 +1,18 @@
 # mini60
-Android app for Bluetooth control of the Mini 60 and SARK 100 antenna analyzers
+Android and Windows 10 app for Bluetooth control of the Mini 60 and SARK 100 antenna analyzers.
 
 NOTE: this is a work in progress to update the Open60 app.  Use https://github.com/ishmal/open60 for now.
 
+BUT if you would like to try the new stuff, check out the releases page: https://github.com/ishmal/mini60/releases
+
+
 ![Alt text](misc/mini60.jpg?raw=true "MINI60")
 ![Alt text](misc/demo-40m-tooltip.png?raw=true "example")
+![Alt text](misc/demo-20m-win.png?raw=true "example")
 
 ### About
 
-Two years I received a Bluetooth-equipped Mini60 Antenna Analyzer from a Chinese eBay seller.  It is an assembled
+Two years ago I received a Bluetooth-equipped Mini60 Antenna Analyzer from a Chinese eBay seller.  It is an assembled
 version of the SARK100 antenna analyzer.  It seems to be made well and robust.  It did not come with software, but
 searching revealed Bluetooth clients for Windows and Android.  The Android client can be downloaded from several
 places, yet I cannot find an "official" site for it, nor can I find any documentation.  The Mini60.apk that I found
@@ -33,3 +37,5 @@ either need the 12v charger,  or let the batteries charge up overnight.
 The 12v power socket is 1.2mm .  I could not find this documented anywhere, but that's what it is.
 
 The USB socket is for a "mini b" connector, not the much more common "micro".
+
+
