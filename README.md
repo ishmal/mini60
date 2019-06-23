@@ -1,7 +1,7 @@
-# mini60
+# Mini60App
 Android and Windows 10 app for Bluetooth control of the Mini 60 and SARK 100 antenna analyzers.
 
-NOTE: this is a work in progress to update the Open60 app.  Use https://github.com/ishmal/open60 for now.
+### NOTE: this is a work in progress to update the Open60 app.  Use https://github.com/ishmal/open60 for now.
 
 BUT if you would like to try the new stuff, check out the releases page: https://github.com/ishmal/mini60/releases
 
