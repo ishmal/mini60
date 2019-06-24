@@ -198,6 +198,6 @@ class BtSerialWin {
 
 }
 
-const isWindows = Windows && Windows.Devices;
+const isWindows = typeof Windows !== "undefined" && typeof Windows.Devices !== "undefined";
 export const bluetoothSerial = isWindows ?
 	new BtSerialWin() : window.bluetoothSerial;

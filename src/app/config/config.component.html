@@ -1,35 +1,38 @@
 <div class="config-page">
-	<ion-card>
-		<ion-button id="config-save" class="btn btn-primary">Save</ion-button>
-		<ion-button id="config-restore" class="btn btn-primary">Restore defaults</ion-button>
-	</ion-card>
-	<ion-card>
-		<ion-label class="bt-label">Bluetooth Device Name <ion-input id="config-device" type="text"
-				[value]="config.deviceName"></ion-input>
-		</ion-label>
-	</ion-card>
-	<ion-card>
-		<ion-card-content>
+	<form [formGroup]="configFormGroup">
+		<ion-card>
+			<ion-button id="config-save" class="btn btn-primary" (click)="save()">Save</ion-button>
+			<ion-button id="config-restore" class="btn btn-primary" (click)="restoreDefaults()">Restore defaults
+			</ion-button>
+		</ion-card>
+		<ion-card>
+			<ion-label class="bt-label">Bluetooth Device Name <ion-input id="config-device" type="text"
+					formControlName="deviceName"></ion-input>
+			</ion-label>
+		</ion-card>
+		<ion-card>
+			<ion-card-content>
 				<table class="config-table" cols="3">
 					<thead>
 						<th>name</th>
 						<th>start khz</th>
 						<th>end khz</th>
 					</thead>
-					<tbody>
-						<tr *ngFor="let r of config.ranges">
+					<tbody formArrayName="ranges">
+						<tr *ngFor="let r of configFormGroup.controls.ranges.controls; let i=index" formGroupName="{{i}}">
 							<td>
-								<ion-input type="text" [value]="r.name"></ion-input>
+								<ion-input type="text" formControlName="name"></ion-input>
 							</td>
 							<td>
-								<ion-input type="number" [value]="r.start"></ion-input>
+								<ion-input type="number" formControlName="start"></ion-input>
 							</td>
 							<td>
-								<ion-input type="number" [value]="r.end"></ion-input>
+								<ion-input type="number" formControlName="end"></ion-input>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-		</ion-card-content>
-	</ion-card>
+			</ion-card-content>
+		</ion-card>
+	</form>
 </div>
