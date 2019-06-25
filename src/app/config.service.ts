@@ -96,10 +96,13 @@ const dataName = "mini60";
 export class ConfigService {
 
 	config: Config;
-	range: Range;
 
 	constructor() {
 		this.load();
+	}
+
+	get range(): Range {
+		return this.config.ranges[this.config.rangeIndex];
 	}
 
 	save() {
@@ -112,7 +115,6 @@ export class ConfigService {
 			const item = window.localStorage.getItem(dataName);
 			if (item) {
 				this.config = JSON.parse(item);
-				this.range = this.config.ranges[this.config.rangeIndex];
 			} else {
 				this.reset();
 			}
@@ -127,28 +129,24 @@ export class ConfigService {
 		const str = JSON.stringify(defaultConfig);
 		const c: Config = JSON.parse(str);
 		this.config = c;
-		this.range = c.ranges[c.rangeIndex];
 		this.save();
 	}
 
 	select(idx) {
 		const c = this.config;
 		c.rangeIndex = idx;
-		this.range = c.ranges[c.rangeIndex];
 		return this.range;
 	}
 
 	next(): Range {
 		const c = this.config;
 		c.rangeIndex = (c.rangeIndex + 1) % c.ranges.length;
-		this.range = c.ranges[c.rangeIndex];
 		return this.range;
 	}
 
 	prev(): Range {
 		const c = this.config;
 		c.rangeIndex = (c.rangeIndex - 1 + c.ranges.length) % c.ranges.length;
-		this.range = c.ranges[c.rangeIndex];
 		return this.range;
 	}
 

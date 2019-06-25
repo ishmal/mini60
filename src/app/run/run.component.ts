@@ -48,7 +48,6 @@ export class RunComponent implements AfterViewInit {
 	chart: any;
 	canvas: any;
 	data: Data;
-	range: Range;
 
 
 	@ViewChild('chartCanvas') chartCanvas: ElementRef;
@@ -56,7 +55,7 @@ export class RunComponent implements AfterViewInit {
 	constructor(private mini60Service: Mini60Service,
 		private configService: ConfigService,
 		private log: LogService) {
-		}
+	}
 
 
 	ngAfterViewInit() {
@@ -182,7 +181,6 @@ export class RunComponent implements AfterViewInit {
 
 	adjustData() {
 		const range = this.configService.range;
-		this.range = range;
 		let opts = this.data.options;
 		let ticks = opts.scales.xAxes[0].ticks;
 		ticks.min = range.start;
@@ -194,7 +192,7 @@ export class RunComponent implements AfterViewInit {
 		this.log.info("startScan");
 		//this 'ticks' code duplicated below intentionally
 		this.adjustData();
-		const range = this.range;
+		const range = this.configService.range;
 		let ds = this.chart.data.datasets;
 		ds[0].data = [];
 		ds[1].data = [];
@@ -227,7 +225,7 @@ export class RunComponent implements AfterViewInit {
 	}
 
 	update(datapoint) {
-		const range = this.range;
+		const range = this.configService.range;
 		const nrSteps = this.mini60Service.nrSteps;
 		const ds = this.chart.data.datasets;
 		const len = ds[0].data.length;
