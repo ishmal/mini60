@@ -34,8 +34,8 @@ export class ConfigComponent implements OnInit {
 		const end = r.end;
 		return fb.group({
 			name: [ r.name, Validators.pattern("[A-Za-z0-9._\-]+")],
-			start: [ r.start, [Validators.min(0), Validators.max(30000)] ],
-			end: [ r.end, [Validators.min(end + 1), Validators.max(30000)] ]
+			start: [ r.start, [Validators.min(0), Validators.max(54200)] ],
+			end: [ r.end, [Validators.min(end + 1), Validators.max(54200)] ]
 		});
 	});
 	this.configFormGroup = fb.group({

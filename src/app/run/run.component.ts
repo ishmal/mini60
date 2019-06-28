@@ -66,6 +66,10 @@ export class RunComponent implements AfterViewInit {
 		this.initData();
 		this.chart = new Chart(ctx, this.data);
 		Chart.pluginService.register(annotationPlugin);
+		this.configService.rangeObservable.subscribe(r => {
+			this.adjustData();
+			this.redraw();
+		});
 		this.setupEvents();
 	}
 

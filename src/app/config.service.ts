@@ -1,6 +1,5 @@
-import {
-	Injectable
-} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from "rxjs";
 
 export interface Range {
 	name: string,
@@ -96,9 +95,11 @@ const dataName = "mini60";
 export class ConfigService {
 
 	config: Config;
+	rangeObservable: Subject<Range>;
 
 	constructor() {
 		this.load();
+		this.rangeObservable = new Subject<Range>();
 	}
 
 	get range(): Range {
@@ -135,12 +136,14 @@ export class ConfigService {
 	select(idx) {
 		const c = this.config;
 		c.rangeIndex = idx;
+		this.rangeObservable.next(idx);
 		return this.range;
 	}
 
 	next(): Range {
 		const c = this.config;
 		c.rangeIndex = (c.rangeIndex + 1) % c.ranges.length;
+		this.rangeObservable.next(this.range);
 		return this.range;
 	}
 
