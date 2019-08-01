@@ -49,13 +49,19 @@ class BtSerialWin {
 		}
 	}
 
+	/**
+	 * Lists paired devices, whether they are connected or visible or not
+	 * @param {function<list<deviceInformation>>} success function to call async in case of success.  Returns list
+	 * of device information
+	 * @param {function<string>} failure called async in case of failure.  Send error message
+	 */
 	list(success, failure) {
 		// namespace shortcuts
 		const ENS = Windows.Devices.Enumeration;
 		const BNS = Windows.Devices.Bluetooth;
 		const selector1 = 
 			"System.Devices.Aep.ProtocolId:=\"{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}\"";
-		const selector2 = BNS.BluetoothDevice.getDeviceSelectorFromPairingState(true);
+		const selector = BNS.BluetoothDevice.getDeviceSelectorFromPairingState(true);
 		this.devices = {};
     	const complete = (devices) => {
         	for (let i = 0, len = devices.length; i < len; i++) {
@@ -63,13 +69,13 @@ class BtSerialWin {
 				this.devices[di.name] = di;
 			}
 			success(devices);
-   	 	}
+   	 	};
 
 		const error = (e) => {
 			failure(e);
 			console.error(e);
-		}
-		ENS.DeviceInformation.findAllAsync(selector2, null).done(complete, error);
+		};
+		ENS.DeviceInformation.findAllAsync(selector, null).done(complete, error);
 	}
 
 	startReading(socket) {
@@ -130,19 +136,12 @@ class BtSerialWin {
 			return;
 		}
 		const rfcommService = rfcommServices.services[0];
-
-		/*
-		const sdpServiceNameAttributeId = 0x100;
-		const attributes = await rfcommService.getSdpRawAttributesAsync();
-        if (!attributes.ContainsKey(sdpServiceNameAttributeId)) {
-            failure("rfComm service is not advertising the Service Name attribute (attribute id=0x100)");
-            return;
-		}
-		*/
+		const hostName = rfcommService.connectionHostName;
+		const serviceName = rfcommService.connectionServiceName
 
 		const socket = new SNS.StreamSocket();
 		try {
-			await p_connectAsync(socket, rfcommService.connectionHostName, rfcommService.connectionServiceName);
+			await p_connectAsync(socket, hostName, serviceName);
 			this.socket = socket;
 			this.startReading(socket);
 			success(`connected to '${nameOrAddress}' `);
@@ -151,6 +150,11 @@ class BtSerialWin {
 		}
 	}
 
+	/**
+	 * Disconnect our stream socket
+	 * @param {function<string>} success function to call in case of success
+	 * @param {function<string>} failure function to call in case of failure 
+	 */
 	async disconnect(success, failure) {
 		clearInterval(this.readInterval);
 		if (!this.socket) {

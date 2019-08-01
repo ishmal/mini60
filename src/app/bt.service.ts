@@ -22,6 +22,16 @@ export class BtService {
 		}
 	  });
 	}
+
+	listPaired() {
+		return new Promise((resolve, reject) => {
+			if (!bt) {
+			  reject("btListPaired: bluetooth not found");
+			} else {
+			  bt.listPaired(resolve, reject);
+			}
+		  });	
+	}
   
 	list() {
 	  return new Promise((resolve, reject) => {

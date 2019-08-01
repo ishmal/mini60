@@ -146,10 +146,17 @@ export class Mini60Service {
 	}
 
 	async checkConnectAndScan(parent) {
+		/**
+		 * 1:  First, if we are a browser, we are only testing, so let's
+		 * just run the test. 
+		 */
 		if (isBrowser) {
 			this.dummyScan(parent);
 			return;
 		}
+		/**
+		 * 2: If we are already connected, go ahead and scan
+		 */
 		if (this.connected) {
 			this.scan();
 		}
